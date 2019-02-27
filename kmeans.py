@@ -97,7 +97,7 @@ def initialize_clusters(X, K, method):
 
     if method == 'determ':
         # just use the first K points as centers
-        mu = X[:K].copy()     # be sure to copy otherwise bad things happen!!!
+        mu = X[:K].copy()
 
     elif method == 'random':
         # pick K random centers
@@ -110,8 +110,8 @@ def initialize_clusters(X, K, method):
         # subsequent center according to the furthest first
         # heuristic
         z   = np.zeros((N,), dtype=float)
-        # pick the first center totally randomly
-        mu[0,:] = X[int(np.random.rand() * N), :].copy()    # be sure to copy!
+        # assign subsequent center to a point with max(min(distances to previously selected centroids))
+        mu[0,:] = X[int(np.random.rand() * N), :].copy()
 
         # pick each subsequent center by ldh
         for k in range(1, K):
@@ -134,9 +134,9 @@ def initialize_clusters(X, K, method):
         z   = np.zeros((N,), dtype=float)
         probtable   = np.zeros((N,), dtype=float)
         # pick the first center totally randomly
-        mu[0,:] = X[int(np.random.rand() * N), :].copy()    # be sure to copy!
+        mu[0,:] = X[int(np.random.rand() * N), :].copy()
 
-        # pick each subsequent center by ldh
+        # pick each subsequent center with a probability proportional to max(min(distances to previously selected centroids))
         for k in range(1, K):
             # find m such that data point n is the best next mean, set
             # this to mu[k,:]
